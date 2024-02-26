@@ -6,4 +6,6 @@
     <string name="descriptionTrash">Delete select movies</string>
     <string name="addButton">+</string>
     <string name="descriptionIcon">Icon movie</string>
+    <string name="add_movie">Add Movie</string>
+    <string name="search_result">Search Result</string>
 </resources>
