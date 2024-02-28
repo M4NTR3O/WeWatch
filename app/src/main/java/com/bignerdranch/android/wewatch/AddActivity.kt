@@ -1,5 +1,6 @@
 package com.bignerdranch.android.wewatch
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
@@ -15,12 +16,19 @@ class AddActivity: AppCompatActivity() {
     private lateinit var add: Button
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.fragment_movie)
+        setContentView(R.layout.activity_add)
         movieTitle = findViewById(R.id.editTextTitle)
         yearMovie = findViewById(R.id.editTextYear)
         poster = findViewById(R.id.imageViewPoster)
         search = findViewById(R.id.imageButtonSearch)
         add = findViewById(R.id.buttonAddMovie)
+        search.setOnClickListener(){
+            val intent = Intent(this@AddActivity, SearchActivity:: class.java)
+            startActivity(intent)
+        }
+        add.setOnClickListener(){
+
+        }
     }
     companion object{
 

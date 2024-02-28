@@ -4,7 +4,7 @@ import com.bignerdranch.android.wewatch.Movie
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 
-class TmdbResponse {
+class OmdbResponse {
     @SerializedName("page")
     @Expose
     var page: Int? = null
