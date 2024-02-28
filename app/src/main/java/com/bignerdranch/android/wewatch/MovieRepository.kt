@@ -20,12 +20,12 @@ class MovieRepository private  constructor(context: Context){
 
     fun getMovies(): LiveData<List<Movie>> = movieDao.getMovies()
     fun getMovie(id: UUID): LiveData<Movie?> = movieDao.getMovie(id)
-    /*fun updateCrime(movie: Movie) {
+    fun updateMovie(movie: Movie) {
         executor.execute {
-            movieDao.updateCrime(movie)
+            movieDao.updateMovie(movie)
         }
-    }*/
-    fun addCrime(movie: Movie) {
+    }
+    fun addMovie(movie: Movie) {
         executor.execute {
             movieDao.addMovie(movie)
         }

@@ -13,10 +13,10 @@ class MovieDetailViewModel: ViewModel() {
         movieIdLiveData.switchMap { movieId ->
             movieRepository.getMovie(movieId)
         }
-    fun movieCrime(movieId: UUID) {
+    fun loadMovie(movieId: UUID) {
         movieIdLiveData.value = movieId
     }
-    /*fun saveCrime(movie: Movie) {
-        crimeRepository.updateMovie(movie)
-    }*/
+    fun saveMovie(movie: Movie) {
+        movieRepository.updateMovie(movie)
+    }
 }
