@@ -61,7 +61,4 @@ class AddActivity: AppCompatActivity() {
 
         }
     }
-    companion object{
-
-    }
 }

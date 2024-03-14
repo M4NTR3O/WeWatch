@@ -4,14 +4,19 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.RecyclerView
 
 
 private const val TITLE = "title_movie"
 private const val YEAR = "year_movie"
 class SearchActivity: AppCompatActivity() {
+    private lateinit var searchResultsRecyclerView: RecyclerView
+    private lateinit var adapter: SearchAdapter
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search_movie)
+        searchResultsRecyclerView = findViewById(R.id.rcView)
+
     }
     companion object{
         fun newIntent(packageContext: Context, titleMovie: String, yearMovie: String): Intent {

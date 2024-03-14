@@ -15,7 +15,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         image = findViewById(R.id.imageWithoutMovies)
-        recycleView = findViewById(R.id.rcView)
+        recycleView = findViewById(R.id.recView)
         var adapter: MainAdapter
         addButton = findViewById(R.id.buttonAdd)
         addButton.setOnClickListener(){

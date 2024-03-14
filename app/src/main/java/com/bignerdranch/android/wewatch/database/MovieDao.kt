@@ -19,7 +19,7 @@ interface MovieDao {
     fun getMovie(id: UUID): LiveData<Movie?>
     @Insert
     fun addMovie(movie: Movie)
-    @Query("DELETE FROM movie WHERE id =:id")
+    @Query("DELETE FROM movie WHERE id = :id")
     fun delete(id: Int?)
     @Update
     fun updateMovie(movie: Movie)
