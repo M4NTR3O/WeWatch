@@ -3,6 +3,7 @@ package com.bignerdranch.android.wewatch
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 
@@ -25,5 +26,8 @@ class SearchActivity: AppCompatActivity() {
                 putExtra(YEAR, yearMovie)
             }
         }
+    }
+    interface RecyclerItemListener {
+        fun onItemClick(v: View, position: Int)
     }
 }
