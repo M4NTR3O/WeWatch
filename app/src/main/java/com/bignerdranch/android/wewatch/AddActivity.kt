@@ -54,11 +54,14 @@ class AddActivity: AppCompatActivity() {
                 val title = movieTitle.text.toString()
                 val year = yearMovie.text.toString()
                 val intent = SearchActivity.newIntent(this@AddActivity, title, year)
-                startActivity(intent)
+                startActivityForResult(intent, SEARCH_MOVIE_ACTIVITY_REQUEST_CODE)
             }
         }
         add.setOnClickListener(){
 
         }
+    }
+    companion object {
+        const val SEARCH_MOVIE_ACTIVITY_REQUEST_CODE = 2
     }
 }

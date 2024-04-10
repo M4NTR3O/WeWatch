@@ -11,7 +11,7 @@ import java.util.UUID
 data class Movie (@PrimaryKey val id: UUID = UUID.randomUUID(),
              var Title: String = "",
              var Year: String = "",
-             var Genres: String = "",
+             var Genre: String = "",
              var Poster: String = "",
              var isWatched: Boolean = false){
 }

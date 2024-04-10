@@ -26,7 +26,7 @@ class MainAdapter(internal var movies: List<Movie>, internal var context: Contex
         if (movies[position].Poster.equals("")) {
             holder.movieImageView.setImageDrawable(context.getDrawable(R.drawable.baseline_local_movies_24))
         } else {
-            Picasso.get().load(RetrofitClient.TMDB_IMAGEURL + movies[position].Poster).into(holder.movieImageView)
+            Picasso.get().load(RetrofitClient.OMDB_IMAGEURL + movies[position].Poster).into(holder.movieImageView)
         }
     }
 

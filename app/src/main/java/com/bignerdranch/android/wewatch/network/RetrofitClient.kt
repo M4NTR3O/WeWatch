@@ -1,19 +1,51 @@
 package com.bignerdranch.android.wewatch.network
 
+import android.content.ContentValues
+import android.content.ContentValues.TAG
+import android.util.Log
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import com.bignerdranch.android.wewatch.Movie
+import com.bignerdranch.android.wewatch.database.OmdbResponse
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.create
 
 object RetrofitClient {
     // http://www.omdbapi.com/?i=tt3896198&apikey=63ee68a
         const val API_KEY = "63ee68a"
-        const val TMDB_BASE_URL = "https://www.omdbapi.com/"
-        const val TMDB_IMAGEURL = "https://m.media-amazon.com/images/M/"
+        const val OMDB_BASE_URL = "https://omdbapi.com/"
+        const val OMDB_IMAGEURL = "http://img.omdbapi.com/"
+    private val moviesApi: RetrofitInterface
+    init{
+        val retrofit = Retrofit.Builder()
+            .baseUrl(OMDB_BASE_URL)
+            .addConverterFactory(GsonConverterFactory.create())
+            .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+            .build()
+        moviesApi = retrofit.create(RetrofitInterface::class.java)
+    }
+    fun searchMovie(): LiveData<String>{
+        val responseLiveData: MutableLiveData<String> = MutableLiveData()
+        val flickrRequest: Call<String> = moviesApi.searchMovie()
+        flickrRequest.enqueue(object : Callback<String> {
+            override fun onFailure(call: Call<String>, t: Throwable) {
+                Log.e(TAG, "Failed to fetch photos", t)
+            }
+            override fun onResponse(
+                call: Call<String>,
+                response: Response<String>
+            ) {
+                Log.d(TAG, "Response received")
+                responseLiveData.value =
+                    response.body()
+            }
+        })
+        return responseLiveData
+    }
 
-    val moviesApi = Retrofit.Builder()
-        .baseUrl(TMDB_BASE_URL)
-        .addConverterFactory(GsonConverterFactory.create())
-        .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-        .build()
-        .create(RetrofitInterface::class.java)
 }
