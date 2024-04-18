@@ -22,7 +22,7 @@ class SearchAdapter(var movieList: List<Movie>, var context: Context, var listen
 
         holder.titleTextView.text = movieList[position].Title
         holder.releaseDateTextView.text = movieList[position].Year
-        holder.overviewTextView.text = movieList[position].Genres
+        holder.overviewTextView.text = movieList[position].Genre
 
         if (movieList[position].Poster != null) {
             Picasso.get().load("https://image.tmdb.org/t/p/w500/" + movieList[position].Poster).into(holder.movieImageView)

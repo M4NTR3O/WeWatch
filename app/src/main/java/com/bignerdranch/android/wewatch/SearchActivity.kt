@@ -8,6 +8,8 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.RecyclerView
 import com.bignerdranch.android.wewatch.database.OmdbResponse
 import com.bignerdranch.android.wewatch.network.RetrofitClient
@@ -23,6 +25,8 @@ private const val TAG = "PhotoGalleryFragment"
 private const val TITLE = "title_movie"
 private const val YEAR = "year_movie"
 class SearchActivity: AppCompatActivity() {
+    private lateinit var movieListViewModel:
+            MovieListViewModel
     private lateinit var searchResultsRecyclerView: RecyclerView
     private lateinit var adapter: SearchAdapter
     private val title = intent.getStringExtra(TITLE)
@@ -31,13 +35,13 @@ class SearchActivity: AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search_movie)
         searchResultsRecyclerView = findViewById(R.id.rcView)
-        val omdbLiveData: LiveData<String> = RetrofitClient.searchMovie()
-        omdbLiveData.observe(
+        movieListViewModel = ViewModelProviders.of(this).get(MovieListViewModel::class.java)
+        /*movieListViewModel.movieListLiveData.observe(
             this,
-            Observer { responseString ->
-                Log.d(TAG, "Response received:$responseString")
-            })
-
+            Observer {
+                movieItems -> searchResultsRecyclerView.adapter = SearchAdapter(movieItems)
+            }
+        )*/
     }
     companion object{
         fun newIntent(packageContext: Context, titleMovie: String, yearMovie: String): Intent {
