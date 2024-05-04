@@ -12,6 +12,6 @@ interface RetrofitInterface {
             "&format=json" +
             "&nojsoncallback=1" +
             "&extras=url_s")
-    fun searchMovie(/*@Query("query") s: String*/): Call<OmdbResponse>
+    fun searchMovie(/*@Query("query") s: String*/): Call<String>
 
 }

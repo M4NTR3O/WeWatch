@@ -27,6 +27,7 @@ class SearchAdapter(var movieList: List<Movie>, var context: Context, var listen
         if (movieList[position].Poster != null) {
             Picasso.get().load("https://image.tmdb.org/t/p/w500/" + movieList[position].Poster).into(holder.movieImageView)
         }
+
     }
 
     override fun getItemCount(): Int {
