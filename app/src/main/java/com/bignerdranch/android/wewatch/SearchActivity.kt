@@ -13,6 +13,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.RecyclerView
 import com.bignerdranch.android.wewatch.database.OmdbResponse
+import com.bignerdranch.android.wewatch.network.MovieResponse
 import com.bignerdranch.android.wewatch.network.RetrofitClient
 import com.bignerdranch.android.wewatch.network.RetrofitInterface
 import io.reactivex.Observable
@@ -37,21 +38,31 @@ class SearchActivity: AppCompatActivity() {
             .build()
         movieApi = retrofit.create(RetrofitInterface::class.java)
     }
-    fun searchContents(): LiveData<String> {
-        val responseLiveData: MutableLiveData<String> = MutableLiveData()
-        val searchRequest: Call<String> = movieApi.searchMovie()
+    fun searchContents(): LiveData<List<Movie>> {
+        val responseLiveData: MutableLiveData<List<Movie>> = MutableLiveData()
+        val searchRequest: Call<OmdbResponse> = movieApi.searchMovie()
         searchRequest.enqueue(object :
-            Callback<String> {
-            override fun onFailure(call: Call<String>, t: Throwable) {
+            Callback<OmdbResponse> {
+            override fun onFailure(call: Call<OmdbResponse>, t: Throwable) {
                 Log.e(TAG, "Failed to search movies", t)
             }
             override fun onResponse(
-                call: Call<String>,
-                response: Response<String>
+                call: Call<OmdbResponse>,
+                response: Response<OmdbResponse>
             ) {
                 Log.d(TAG, "Response received")
-                responseLiveData.value =
-                    response.body()
+                val searchResponse:
+                        OmdbResponse? = response.body()
+                val movieResponse:
+                        MovieResponse? = searchResponse?.movies
+                var moviesItems:
+                        List<Movie> = movieResponse?.movieItems
+                    ?: mutableListOf()
+                moviesItems =
+                    moviesItems.filterNot {
+                        it.Poster.isBlank()
+                    }
+                responseLiveData.value = moviesItems
             }
         })
         return responseLiveData

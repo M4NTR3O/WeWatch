@@ -32,17 +32,17 @@ object RetrofitClient {
     }
     fun searchMovie(): LiveData<List<Movie>>{
         val responseLiveData: MutableLiveData<List<Movie>> = MutableLiveData()
-        val flickrRequest: Call<OmdbResponse> = moviesApi.searchMovie()
-        flickrRequest.enqueue(object : Callback<OmdbResponse> {
-            override fun onFailure(call: Call<OmdbResponse>, t: Throwable) {
+        val flickrRequest: Call<String> = moviesApi.searchMovie()
+        /*flickrRequest.enqueue(object : Callback<String> {
+            override fun onFailure(call: Call<String>, t: Throwable) {
                 Log.e(TAG, "Failed to fetch photos", t)
             }
-            override fun onResponse(
-                call: Call<OmdbResponse>,
-                response: Response<OmdbResponse>
+            *//*override fun onResponse(
+                call: Call<String>,
+                response: Response<String>
             ) {
                 Log.d(TAG, "Response received")
-                val omdbResponse: OmdbResponse? = response.body()
+                val omdbResponse: String? = response.body()
                 val movieResponse: MovieResponse? = omdbResponse?.movies
                 var movieItems: List<Movie> = movieResponse?.movieItems ?: mutableListOf()
                 movieItems =
@@ -51,8 +51,8 @@ object RetrofitClient {
                     }
                 responseLiveData.value =
                     movieItems
-            }
-        })
+            }*//*
+        })*/
         return responseLiveData
     }
 

@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bignerdranch.android.wewatch.network.RetrofitClient
@@ -22,16 +23,13 @@ import retrofit2.converter.gson.GsonConverterFactory
 private const val TAG = "MovieFragment"
 
 class MovieFragment: Fragment() {
-    private lateinit var photoRecyclerView: RecyclerView
+    private lateinit var movieViewModel: MovieViewModel
+    private lateinit var movieRecyclerView: RecyclerView
     override fun onCreate(savedInstanceState:
                           Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val searchLiveData: LiveData<String> = SearchActivity().searchContents()
-        searchLiveData.observe(
-            this,
-            Observer { responseString -> Log.d(TAG, "Response received:$responseString")
-            })
+        movieViewModel = ViewModelProviders.of(this).get(MovieViewModel::class.java)
     }
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -40,12 +38,25 @@ class MovieFragment: Fragment() {
     ): View {
         val view =
             inflater.inflate(R.layout.fragment_movie_list, container, false)
-        photoRecyclerView =
+        movieRecyclerView =
             view.findViewById(R.id.photo_recycler_view)
-        photoRecyclerView.layoutManager =
+        movieRecyclerView.layoutManager =
             GridLayoutManager(context, 3)
         return view
     }
+
+    override fun onViewCreated(view: View,
+                               savedInstanceState: Bundle?) {
+        super.onViewCreated(view,
+            savedInstanceState)
+        movieViewModel.galleryItemLiveData.observe(
+            viewLifecycleOwner,
+            Observer { galleryItems ->
+                Log.d(TAG, "Have gallery items from ViewModel $galleryItems")
+// Обновить данные, поддерживающие представление утилизатора
+            })
+    }
+
     companion object {
         fun newInstance() =
             MovieFragment()
