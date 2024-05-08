@@ -9,9 +9,9 @@ import java.util.UUID
 
 @Entity
 data class Movie (@PrimaryKey val id: UUID = UUID.randomUUID(),
-             var Title: String = "",
-             var Year: String = "",
-             var Genre: String = "",
-             var Poster: String = "",
+             var title: String = "",
+             var year: String = "",
+             var genre: String = "",
+             var poster: String = "",
              var isWatched: Boolean = false){
 }

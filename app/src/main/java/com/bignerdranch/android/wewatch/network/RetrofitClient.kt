@@ -26,33 +26,37 @@ object RetrofitClient {
         val retrofit = Retrofit.Builder()
             .baseUrl(OMDB_BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
-            .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+            /*.addCallAdapterFactory(RxJava2CallAdapterFactory.create())*/
             .build()
         moviesApi = retrofit.create(RetrofitInterface::class.java)
     }
+    private val imagesApi: RetrofitInterface
+    init{
+        val retrofit = Retrofit.Builder()
+            .baseUrl(OMDB_IMAGEURL)
+            .addConverterFactory(GsonConverterFactory.create())
+            /*.addCallAdapterFactory(RxJava2CallAdapterFactory.create())*/
+            .build()
+        imagesApi = retrofit.create(RetrofitInterface::class.java)
+    }
     fun searchMovie(): LiveData<List<Movie>>{
         val responseLiveData: MutableLiveData<List<Movie>> = MutableLiveData()
-        val flickrRequest: Call<String> = moviesApi.searchMovie()
-        /*flickrRequest.enqueue(object : Callback<String> {
-            override fun onFailure(call: Call<String>, t: Throwable) {
+        val searchRequest: Call<OmdbResponse> = moviesApi.searchMovie()
+        searchRequest.enqueue(object : Callback<OmdbResponse> {
+            override fun onFailure(call: Call<OmdbResponse>, t: Throwable) {
                 Log.e(TAG, "Failed to fetch photos", t)
             }
-            *//*override fun onResponse(
-                call: Call<String>,
-                response: Response<String>
-            ) {
+            override fun onResponse(call: Call<OmdbResponse>, response: Response<OmdbResponse>            ) {
                 Log.d(TAG, "Response received")
-                val omdbResponse: String? = response.body()
+                val omdbResponse: OmdbResponse? = response.body()
                 val movieResponse: MovieResponse? = omdbResponse?.movies
                 var movieItems: List<Movie> = movieResponse?.movieItems ?: mutableListOf()
-                movieItems =
-                    movieItems.filterNot {
-                        it.Poster.isBlank()
+                movieItems = movieItems.filterNot {
+                        it.poster.isBlank()
                     }
-                responseLiveData.value =
-                    movieItems
-            }*//*
-        })*/
+                responseLiveData.value = movieItems
+            }
+        })
         return responseLiveData
     }
 

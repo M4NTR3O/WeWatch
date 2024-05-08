@@ -1,10 +1,15 @@
 package com.bignerdranch.android.wewatch
 
+import android.graphics.drawable.ColorDrawable
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
@@ -49,13 +54,41 @@ class MovieFragment: Fragment() {
                                savedInstanceState: Bundle?) {
         super.onViewCreated(view,
             savedInstanceState)
-        movieViewModel.galleryItemLiveData.observe(
+        movieViewModel.movieItemLiveData.observe(
             viewLifecycleOwner,
-            Observer { galleryItems ->
-                Log.d(TAG, "Have gallery items from ViewModel $galleryItems")
-// Обновить данные, поддерживающие представление утилизатора
+            Observer { movieItems ->
+                movieRecyclerView.adapter = MovieAdapter(movieItems)
             })
     }
+
+    private class MovieHolder(private val itemImageView: ImageView) : RecyclerView.ViewHolder(itemImageView)
+    {
+        val bindDrawable: (Drawable) -> Unit = itemImageView::setImageDrawable
+    }
+    private inner class MovieAdapter(private val movieItems: List<Movie>)
+        : RecyclerView.Adapter<MovieHolder>() {
+        override fun onCreateViewHolder(
+            parent: ViewGroup,
+            viewType: Int
+        ): MovieHolder {
+            val view = layoutInflater.inflate(
+                R.layout.list_item_movie,
+                parent,
+                false
+            ) as ImageView
+            return MovieHolder(view)
+        }
+        override fun getItemCount(): Int =
+            movieItems.size
+        override fun onBindViewHolder(holder: MovieHolder, position: Int) {
+            val movieItem = movieItems[position]
+            val placeholder: Drawable = ContextCompat.getDrawable(
+                    requireContext(),
+                    R.drawable.baseline_image_search_24) ?: ColorDrawable()
+            holder.bindDrawable(placeholder)
+        }
+    }
+
 
     companion object {
         fun newInstance() =

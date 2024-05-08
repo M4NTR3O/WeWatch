@@ -2,9 +2,12 @@ package com.bignerdranch.android.wewatch
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import androidx.annotation.WorkerThread
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -13,11 +16,13 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.RecyclerView
 import com.bignerdranch.android.wewatch.database.OmdbResponse
+import com.bignerdranch.android.wewatch.network.MovieInterceptor
 import com.bignerdranch.android.wewatch.network.MovieResponse
 import com.bignerdranch.android.wewatch.network.RetrofitClient
 import com.bignerdranch.android.wewatch.network.RetrofitInterface
 import io.reactivex.Observable
 import okhttp3.OkHttpClient
+import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -31,10 +36,14 @@ private const val YEAR = "year_movie"
 class SearchActivity: AppCompatActivity() {
     private val movieApi: RetrofitInterface
     init {
+        val client = OkHttpClient.Builder()
+            .addInterceptor(MovieInterceptor())
+            .build()
         val retrofit: Retrofit = Retrofit.Builder()
             .baseUrl(RetrofitClient.OMDB_BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+            .client(client)
             .build()
         movieApi = retrofit.create(RetrofitInterface::class.java)
     }
@@ -60,7 +69,7 @@ class SearchActivity: AppCompatActivity() {
                     ?: mutableListOf()
                 moviesItems =
                     moviesItems.filterNot {
-                        it.Poster.isBlank()
+                        it.poster.isBlank()
                     }
                 responseLiveData.value = moviesItems
             }
@@ -103,5 +112,12 @@ class SearchActivity: AppCompatActivity() {
     }
     interface RecyclerItemListener {
         fun onItemClick(v: View, position: Int)
+    }
+    @WorkerThread
+    fun fetchPhoto(url: String): Bitmap? {
+        val response: Response<ResponseBody> = movieApi.searchUrlBytes(url).execute()
+        val bitmap = response.body()?.byteStream()?.use(BitmapFactory::decodeStream)
+        Log.i(TAG,"Decoded bitmap=$bitmap from Response=$response")
+        return bitmap
     }
 }

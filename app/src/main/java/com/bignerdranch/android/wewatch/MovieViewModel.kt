@@ -4,9 +4,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 
 class MovieViewModel: ViewModel() {
-    val galleryItemLiveData: LiveData<List<Movie>>
+    val movieItemLiveData: LiveData<List<Movie>>
     init {
-        galleryItemLiveData =
+        movieItemLiveData =
             SearchActivity().searchContents()
     }
 }

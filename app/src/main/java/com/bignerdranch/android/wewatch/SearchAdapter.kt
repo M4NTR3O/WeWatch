@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.bignerdranch.android.wewatch.network.RetrofitInterface
 import com.squareup.picasso.Picasso
 
 class SearchAdapter(var movieList: List<Movie>, var context: Context, var listener: SearchActivity.RecyclerItemListener) : RecyclerView.Adapter<SearchAdapter.SearchMoviesHolder>() {
@@ -20,12 +21,12 @@ class SearchAdapter(var movieList: List<Movie>, var context: Context, var listen
 
     override fun onBindViewHolder(holder: SearchMoviesHolder, position: Int) {
 
-        holder.titleTextView.text = movieList[position].Title
-        holder.releaseDateTextView.text = movieList[position].Year
-        holder.overviewTextView.text = movieList[position].Genre
+        holder.titleTextView.text = movieList[position].title
+        holder.releaseDateTextView.text = movieList[position].year
+        holder.overviewTextView.text = movieList[position].genre
 
-        if (movieList[position].Poster != null) {
-            Picasso.get().load("https://image.tmdb.org/t/p/w500/" + movieList[position].Poster).into(holder.movieImageView)
+        if (movieList[position].poster != null) {
+            Picasso.get().load("http://img.omdbapi.com/?apikey=63ee68a&" + movieList[position].poster).into(holder.movieImageView)
         }
 
     }

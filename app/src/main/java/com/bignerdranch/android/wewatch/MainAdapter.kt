@@ -21,12 +21,12 @@ class MainAdapter(internal var movies: List<Movie>, internal var context: Contex
     }
 
     override fun onBindViewHolder(holder: MovieHolder, position: Int) {
-        holder.titleTextView.text = movies[position].Title
-        holder.releaseDateTextView.text = movies[position].Year
-        if (movies[position].Poster.equals("")) {
+        holder.titleTextView.text = movies[position].title
+        holder.releaseDateTextView.text = movies[position].year
+        if (movies[position].poster.equals("")) {
             holder.movieImageView.setImageDrawable(context.getDrawable(R.drawable.baseline_local_movies_24))
         } else {
-            Picasso.get().load(RetrofitClient.OMDB_IMAGEURL + movies[position].Poster).into(holder.movieImageView)
+            Picasso.get().load(RetrofitClient.OMDB_IMAGEURL + movies[position].poster).into(holder.movieImageView)
         }
     }
 
